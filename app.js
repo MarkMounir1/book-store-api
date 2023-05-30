@@ -6,6 +6,8 @@ const authorsPath = require("./routes/authors");
 const authPath = require("./routes/auth");
 //lazm a3ml user path 3shan a7oto ta7t f comment el Routes
 const usersPath = require("./routes/users");
+// lazm a3ml password Path
+const passwordPath = require("./routes/password");
 //const mongoose = require("mongoose");
 const connectToDB = require("./config/db");
 //import logger
@@ -38,7 +40,8 @@ const app = express();
 
 //Apply Middlewares
 app.use(express.json()); //bya5od el req mn el client w y7awlha l json file fa el express hy3rf en dh json file // by7awl el json l javascript object
-
+//haya5od el mail mn el view
+app.use(express.urlencoded({extended:false}));
 //el comment eli t7t dh before making miidle ware folder
 /*app.use((req, res, next) => {
   console.log(`${req.method} ${req.protocol}://${req.get("host")}${req.originalUrl}`);
@@ -46,11 +49,14 @@ app.use(express.json()); //bya5od el req mn el client w y7awlha l json file fa e
 });*/
 app.use(logger);
 
+app.set('view engine','ejs');
+
 // Routes
 app.use("/api/books", booksPath);
 app.use("/api/authors", authorsPath);
 app.use("/api/auth",authPath);
 app.use("/api/users",usersPath);
+app.use("/password",passwordPath);
 
 
 //Error Handler MiddleWare
