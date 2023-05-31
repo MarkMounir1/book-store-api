@@ -1,5 +1,8 @@
 // awl 7aga a3ml import ll express
 const express = require("express");
+const path = require("path");
+const helmet = require("helmet");
+const cors = require("cors");
 const booksPath = require("./routes/books");
 const authorsPath = require("./routes/authors");
 //lazm a3ml auth path 3shan a7oto ta7t f comment el Routes
@@ -38,6 +41,10 @@ const app = express();
 // app.put();
 // app.delete();
 
+//static folder
+app.use(express.static(path.join(__dirname,"images")));
+
+
 //Apply Middlewares
 app.use(express.json()); //bya5od el req mn el client w y7awlha l json file fa el express hy3rf en dh json file // by7awl el json l javascript object
 //haya5od el mail mn el view
@@ -49,6 +56,24 @@ app.use(express.urlencoded({extended:false}));
 });*/
 app.use(logger);
 
+//Helmet
+app.use(helmet());
+
+// Cors
+//leha kaza tare2a awl wa7da
+// app.use(cors({
+//   origin: "http://localhost/3000"
+// }))
+//tany wa7da
+// app.use(cors({
+//   origin: "*"
+// }))
+//talt wa7da
+app.use(cors());
+
+
+// Set View Engine
+
 app.set('view engine','ejs');
 
 // Routes
@@ -57,6 +82,7 @@ app.use("/api/authors", authorsPath);
 app.use("/api/auth",authPath);
 app.use("/api/users",usersPath);
 app.use("/password",passwordPath);
+app.use("/api/upload",require("./routes/upload"));
 
 
 //Error Handler MiddleWare

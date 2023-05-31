@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const{User}=require("../models/User")
+const{User,validateChangePassword}=require("../models/User")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
@@ -104,6 +104,10 @@ const getResetPasswordView = asyncHandler(async(req,res)=>{
 
 const resetThePassword = asyncHandler(async(req,res)=>{
     //TODO : Validation
+    const {error}= validateChangePassword(req.body);
+    if(error){
+      return res.status(400).json({ message: error.details[0].message});
+    }
     //console.log(req.body.email);
     const user = await User.findById(req.params.userId);
     if (!user) {
